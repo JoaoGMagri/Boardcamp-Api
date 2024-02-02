@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.boardcamp.api.dtos.GameDTO;
+import com.boardcamp.api.exceptions.ExistingGameNameException;
 import com.boardcamp.api.models.GameModel;
 import com.boardcamp.api.repositories.GameRepository;
 
@@ -21,13 +22,13 @@ public class GameService {
         return gameRepository.findAll();
     }
 
-    public Optional<GameModel> save(GameDTO dto) {
+    public GameModel save(GameDTO dto) {
         
         if( gameRepository.existsByName(dto.getName()) ){
-            return Optional.empty();
+            throw new ExistingGameNameException("A game already exists!");
         }
 
-        return Optional.of( gameRepository.save(new GameModel(dto)) );
+        return gameRepository.save( new GameModel(dto) );
 
     }
 

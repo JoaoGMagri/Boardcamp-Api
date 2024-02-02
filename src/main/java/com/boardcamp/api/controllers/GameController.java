@@ -35,11 +35,7 @@ public class GameController {
     @PostMapping
     public ResponseEntity<Object> postGame(@RequestBody @Valid GameDTO body) {
         
-        Optional<GameModel> game = gameService.save(body);
-
-        if(!game.isPresent()){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("A game already exists!");  
-        }
+        GameModel game = gameService.save(body);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(game);
 
