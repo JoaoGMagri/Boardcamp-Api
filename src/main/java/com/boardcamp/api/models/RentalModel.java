@@ -58,4 +58,15 @@ public class RentalModel {
         this.game = game;
     }
 
+    public RentalModel(RentalModel rental, String dateReturn, int priceDelay, GameModel game) {
+        this.id = rental.getId();
+        this.rentDate = rental.getRentDate();
+        this.dayRented = rental.getDayRented();
+        this.returnDate = dateReturn;
+        this.originalPrice = rental.getOriginalPrice();
+        this.delayFee = priceDelay;
+        this.customer = rental.getCustomer();
+        this.game = game;
+    }
+
 }

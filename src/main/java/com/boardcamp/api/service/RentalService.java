@@ -54,5 +54,29 @@ public class RentalService {
 
     }
 
+    public RentalModel update(Long id) {
+
+        int updatePrice = 000;
+
+        RentalModel rental = rentalRepository.findById(id).orElseThrow( () -> new ExceptionNotFound("Rental not found!"));
+        
+        if(rental.getReturnDate() != null) {
+            throw new ExceptionUnprocessableEntity("Return has already been made!");
+        }
+
+        GameModel newGame = new GameModel(rental.getGame(), rental.getGame().getStockTotal()+1);
+        gameRepository.save(newGame);
+        
+
+        int delay = data.compareTo(rental.getRentDate()); 
+        int delayConfirm =  delay - rental.getDayRented();
+
+        if(delayConfirm > 0){
+            updatePrice = delayConfirm * rental.getGame().getPricePerDay();
+        }
+
+        return rentalRepository.save(new RentalModel(rental, data, updatePrice, newGame));
+    }
+
 
 }
