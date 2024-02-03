@@ -42,4 +42,12 @@ public class GameModel {
         this.pricePerDay = dto.getPricePerDay();
     }
 
+    public GameModel(GameModel dto, int newStock){
+        this.id = dto.getId(); 
+        this.name = dto.getName();
+        this.image = dto.getImage();
+        this.stockTotal = newStock;
+        this.pricePerDay = dto.getPricePerDay();
+    }
+
 }
