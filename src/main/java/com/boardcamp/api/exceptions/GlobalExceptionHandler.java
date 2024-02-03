@@ -8,18 +8,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     
-    @ExceptionHandler({ ExistingGameNameException.class })
-    public ResponseEntity<Object> handleExistingGameName(ExistingGameNameException exception) {
+    @ExceptionHandler({ ExceptionConflict.class })
+    public ResponseEntity<Object> handleConflict(ExceptionConflict exception) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
     }
 
-    @ExceptionHandler({ ExistingCPFException.class })
-    public ResponseEntity<Object> handleExistingCPF(ExistingCPFException exception) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+    @ExceptionHandler({ ExceptionUnprocessableEntity.class })
+    public ResponseEntity<Object> handleUnprocessableEntity(ExceptionUnprocessableEntity exception) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(exception.getMessage());
     }
 
-    @ExceptionHandler({ UserNotFoundException.class })
-    public ResponseEntity<Object> handleUserNotFound(UserNotFoundException exception) {
+    @ExceptionHandler({ ExceptionNotFound.class })
+    public ResponseEntity<Object> handleNotFound(ExceptionNotFound exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 

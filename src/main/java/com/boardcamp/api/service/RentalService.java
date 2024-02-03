@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.boardcamp.api.dtos.RentalDTO;
-import com.boardcamp.api.exceptions.ExistingGameNameException;
-import com.boardcamp.api.exceptions.UserNotFoundException;
+import com.boardcamp.api.exceptions.ExceptionNotFound;
+import com.boardcamp.api.exceptions.ExceptionUnprocessableEntity;
 import com.boardcamp.api.models.CustomerModel;
 import com.boardcamp.api.models.GameModel;
 import com.boardcamp.api.models.RentalModel;
@@ -38,11 +38,11 @@ public class RentalService {
 
     public RentalModel save(RentalDTO dto) {
 
-        CustomerModel customer = customerRepository.findById(dto.getCustomerId()).orElseThrow( () -> new UserNotFoundException("1"));
-        GameModel     game     = gameRepository.findById(dto.getGameId()).orElseThrow( () -> new UserNotFoundException("2"));
+        CustomerModel customer = customerRepository.findById(dto.getCustomerId()).orElseThrow( () -> new ExceptionNotFound("User not found!"));
+        GameModel     game     = gameRepository.findById(dto.getGameId()).orElseThrow( () -> new ExceptionNotFound("Game not found!"));
         
         if ( game.getStockTotal() < 1 ){
-            throw new ExistingGameNameException("3");
+            throw new ExceptionUnprocessableEntity("No copies available!");
         }
 
         GameModel newGame = new GameModel(game, game.getStockTotal()-1);
