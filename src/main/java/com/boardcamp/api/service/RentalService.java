@@ -78,5 +78,4 @@ public class RentalService {
         return rentalRepository.save(new RentalModel(rental, data, updatePrice, newGame));
     }
 
-
 }
