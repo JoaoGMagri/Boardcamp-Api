@@ -29,7 +29,7 @@ public class CustomerUnitTest {
 
 
     @Test
-    void givenRepeatedCPFUser_whenCreatingRecipe_thenThrowsError(){
+    void givenRepeatedCPFUser_whenCreatingCustomer_thenThrowsError(){
         CustomerDTO customerDto = new CustomerDTO("name", "12345678910");
         doReturn(true).when(customerRepository).existsByCpf(any());
 
