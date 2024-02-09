@@ -1,6 +1,8 @@
 package com.boardcamp.api.service;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -19,8 +21,7 @@ import com.boardcamp.api.repositories.RentalRepository;
 @Service
 public class RentalService {
 
-    Date dataHoraAtual = new Date();
-    String data = new SimpleDateFormat("dd-MM-yyyy").format(dataHoraAtual);
+    LocalDate data = LocalDate.now();
 
     final RentalRepository rentalRepository;
     final GameRepository gameRepository;
@@ -50,7 +51,7 @@ public class RentalService {
 
         int priceTotal = game.getPricePerDay() * dto.getDaysRented();
 
-        return rentalRepository.save(new RentalModel(dto, data, priceTotal, customer, game) );
+        return rentalRepository.save(new RentalModel(dto, data.toString(), priceTotal, customer, game) );
 
     }
 
@@ -68,14 +69,16 @@ public class RentalService {
         gameRepository.save(newGame);
         
 
-        int delay = data.compareTo(rental.getRentDate()); 
-        int delayConfirm =  delay - rental.getDayRented();
-
-        if(delayConfirm > 0){
-            updatePrice = delayConfirm * rental.getGame().getPricePerDay();
+        LocalDate rentDate = LocalDate.parse(rental.getRentDate());
+        Integer daysBetween = Math.toIntExact(ChronoUnit.DAYS.between(rentDate, data));
+        System.out.println(daysBetween);
+        if (daysBetween > rental.getDayRented()) {
+            int daysDiff = daysBetween - rental.getDayRented();
+            updatePrice = rental.getGame().getPricePerDay() * daysDiff;
         }
 
-        return rentalRepository.save(new RentalModel(rental, data, updatePrice, newGame));
+        return rentalRepository.save(new RentalModel(rental, data.toString(), updatePrice, newGame));
+
     }
 
 }
